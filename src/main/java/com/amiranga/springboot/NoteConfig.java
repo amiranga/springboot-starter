@@ -10,10 +10,13 @@ import org.springframework.context.annotation.Configuration;
 public class NoteConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner(NoteRepository repository) {
+    CommandLineRunner insertDummyNotes(NoteRepository repository) {
         return args -> {
-            for (int i = 1; i < 6; i++) {
-                repository.save(new Note("Note " + i, "Description " + i));
+            boolean noNotes = repository.count() == 0;
+            if (noNotes) {
+                for (int i = 1; i < 6; i++) {
+                    repository.save(new Note("Note " + i, "Description " + i));
+                }
             }
         };
     }
